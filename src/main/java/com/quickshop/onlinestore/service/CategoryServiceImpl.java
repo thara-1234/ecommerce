@@ -1,35 +1,34 @@
 package com.quickshop.onlinestore.service;
 
+import com.quickshop.onlinestore.exception.APIException;
 import com.quickshop.onlinestore.exception.ResourceNotFoundException;
 import com.quickshop.onlinestore.model.Category;
 import com.quickshop.onlinestore.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
-    //private List<Category> categories=new ArrayList<>();
-   // private Long nextId= 1L;
     @Autowired
     private CategoryRepository categoryRepository;
     @Override
     public List<Category> getAllCategories() {
-        //return categories;
-        return categoryRepository.findAll();
+        List<Category> categories=categoryRepository.findAll();
+        if(categories.isEmpty())
+            throw new APIException("No Category created till now.");
+        return categories;
     }
 
     @Override
     public void createCategory(Category category) {
-        //category.setCategoryId(nextId++);
-        //categories.add(category);
+        Category savedCategory=categoryRepository.findByCategoryName(category.getCategoryName());
+        if(savedCategory!=null)
+            throw new APIException("Category with the name "+category.getCategoryName()+" already exists!!!");
         categoryRepository.save(category);
 
     }
-
     @Override
     public String deleteCategory(Long categoryId) {
         //Category category=categories.stream().filter(c->c.getCategoryId().equals(categoryId)).findFirst().get();
@@ -47,6 +46,4 @@ public class CategoryServiceImpl implements CategoryService{
        return categoryRepository.save(category);
 
     }
-
-
 }
