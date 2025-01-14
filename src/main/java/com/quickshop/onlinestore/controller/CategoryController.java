@@ -1,6 +1,7 @@
 package com.quickshop.onlinestore.controller;
 
 import com.quickshop.onlinestore.model.Category;
+import com.quickshop.onlinestore.payload.CategoryResponse;
 import com.quickshop.onlinestore.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +15,15 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-
-//    public CategoryController(CategoryService categoryService) {
-//        this.categoryService = categoryService;
-//    }
-//@RequestMapping(value = "/api/public/categories",method = RequestMethod.GET)
     @GetMapping("/public/categories")
-    public ResponseEntity<List<Category>> getAllCategories(){
+    public ResponseEntity<CategoryResponse> getAllCategories(){
 
-        List<Category> categories = categoryService.getAllCategories();
-        return new ResponseEntity<>(categories,HttpStatus.OK);
+        CategoryResponse categoryResponse = categoryService.getAllCategories();
+        return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
     }
     @PostMapping("/public/categories")
     public ResponseEntity<String> addCategory(@Valid @RequestBody Category category){
         categoryService.createCategory(category);
-        //return "Category added successfully";
         return new ResponseEntity<>("Category added successfully",HttpStatus.CREATED);
     }
     @DeleteMapping("/admin/categories/{categoryId}")

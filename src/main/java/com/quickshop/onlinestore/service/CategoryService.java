@@ -1,11 +1,12 @@
 package com.quickshop.onlinestore.service;
 
 import com.quickshop.onlinestore.model.Category;
+import com.quickshop.onlinestore.payload.CategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
-List<Category> getAllCategories();
+CategoryResponse getAllCategories();
 void createCategory(Category category);
 String deleteCategory(Long categoryId);
 

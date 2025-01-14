@@ -3,22 +3,32 @@ package com.quickshop.onlinestore.service;
 import com.quickshop.onlinestore.exception.APIException;
 import com.quickshop.onlinestore.exception.ResourceNotFoundException;
 import com.quickshop.onlinestore.model.Category;
+import com.quickshop.onlinestore.payload.CategoryDTO;
+import com.quickshop.onlinestore.payload.CategoryResponse;
 import com.quickshop.onlinestore.repositories.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
-    public List<Category> getAllCategories() {
+    public CategoryResponse getAllCategories() {
         List<Category> categories=categoryRepository.findAll();
         if(categories.isEmpty())
             throw new APIException("No Category created till now.");
-        return categories;
+        List<CategoryDTO> categoryDTOS=categories.stream().map(category -> modelMapper.map(category, CategoryDTO.class))
+                .toList();
+        CategoryResponse categoryResponse=new CategoryResponse();
+        categoryResponse.setContent(categoryDTOS);
+        return categoryResponse;
     }
 
     @Override
