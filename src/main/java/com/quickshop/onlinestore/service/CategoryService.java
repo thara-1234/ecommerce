@@ -1,14 +1,13 @@
 package com.quickshop.onlinestore.service;
 
 import com.quickshop.onlinestore.model.Category;
+import com.quickshop.onlinestore.payload.CategoryDTO;
 import com.quickshop.onlinestore.payload.CategoryResponse;
-
-import java.util.List;
 
 public interface CategoryService {
 CategoryResponse getAllCategories();
-void createCategory(Category category);
+CategoryDTO createCategory(CategoryDTO categoryDTO);
 String deleteCategory(Long categoryId);
 
-    Category updateCategory(Category category, Long categoryId);
+    CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId);
 }
